@@ -52,9 +52,9 @@ loglevel 3
     mkdir /cache 0770 system cache
     mkdir /config 0500 root root
 
-    mkdir /efs 0771 system system
-    chown system system /efs
-    chmod 0771 /efs
+#    mkdir /efs 0771 system system
+#    chown system system /efs
+#    chmod 0771 /efs
 
     # Directory for putting things only root should see.
     mkdir /mnt/secure 0700 root root
@@ -149,6 +149,7 @@ fugu_mount_stl9
     chown radio system /efs
     chmod 0771 /efs
 #    mount rfs /dev/block/stl3 /efs nosuid nodev check=no
+    symlink /dbdata/efs /efs
 
 # use movinand second partition as /data. d.moskvitin
     #temp
@@ -306,7 +307,7 @@ on post-fs
     chown root root /system/etc/security/drm
     chmod 0775 /system/etc/security/drm
     # Added for testing DIVX DRM
-    mkdir /efs/.android 0775
+#    mkdir /efs/.android 0775
     chown radio radio /efs/.android
     chmod 0775 /efs/.android
 	

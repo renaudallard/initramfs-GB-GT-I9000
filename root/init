@@ -1,5 +1,5 @@
 #!/sbin/sh
-
+set -x
 # Copyright 2010 Renaud Allard. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, are
@@ -26,7 +26,7 @@
 # authors and should not be interpreted as representing official policies, either expressed
 # or implied, of Renaud Allard.
 
-VERSION=1.9
+VERSION=2.0
 
 PATH=/bin:/sbin:/usr/bin/:/usr/sbin:/system/bin
 
@@ -421,7 +421,7 @@ fi;
 # Mount dbdata to fix permissions
 mkdir -p /dbdata
 mount -t ${STL10_FS} -o rw${STL10_MNT} /dev/block/stl10 /dbdata
-/sbin/fix_permissions >>/fugumod.log
+#/sbin/fix_permissions >>/fugumod.log
 
 # Has EFS been erased? If yes, recreate it.
 # That's a basic check, I don't really check contents but that more when someone rm -rf /data/*
@@ -490,5 +490,7 @@ rm -rf /etc
 rm -rf /system/bin
 rm -f /lib/*
 
-exec /init_samsung
+rm -f /init
+mv /init_samsung /init
+exec /init
 

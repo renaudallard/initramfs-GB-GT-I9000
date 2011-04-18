@@ -9,7 +9,7 @@ parent_name=`cat /proc/$parent_pid/cmdline`
 #echo parent_name: $parent_name >> /jfsmod.log
 
 case $parent_name in
-/init_samsung)
+/init)
 exit 0
 ;;
 esac
