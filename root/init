@@ -113,12 +113,6 @@ case $MMC_FS in
 	reiserfs)
 	MMC_MNT=',noatime,notail'
 	;;
-	btrfs)
-	MMC_MNT=',nodatacow,compress,ssd'
-	;;
-	nilfs2)
-	MMC_MNT=''
-	;;
 	tmpfs)
 	MMC_MNT=',size=200m'
 	;;
@@ -256,12 +250,6 @@ do
 	reiserfs)
 	echo "reiserfs, not checking" >>/fugumod.log 2>>/fugumod.log
 	;;
-	btrfs)
-	/sbin/btrfsck /dev/block/${DEVICE} >>/fugumod.log 2>>/fugumod.log
-	;;
-	nilfs2)
-	echo "nilfs2, not checking" >>/fugumod.log 2>>/fugumod.log
-	;;
 	rfs)
 	echo "rfs, not checking" >>/fugumod.log 2>>/fugumod.log
 	;;
@@ -293,12 +281,6 @@ then
 			;;
 			reiserfs)
 			MKFS='/sbin/mkreiserfs -q -b 4096 -s 1000 '
-			;;
-			btrfs)
-			MKFS='/sbin/mkfs.btrfs -d single '
-			;;
-			nilfs2)
-			MKFS='/sbin/mkfs.nilfs2 -b4096 -B128 -m2 '
 			;;
 			rfs)
 			MKFS='/sbin/mkfs.rfs -F 16 -S 4096 -s 8 '
@@ -421,7 +403,10 @@ fi;
 # Mount dbdata to fix permissions
 mkdir -p /dbdata
 mount -t ${STL10_FS} -o rw${STL10_MNT} /dev/block/stl10 /dbdata
-#/sbin/fix_permissions >>/fugumod.log
+if test -f /fugumod_sd/fugumod/checkperms
+then
+	/sbin/fix_permissions >>/fugumod.log
+fi
 
 # Has EFS been erased? If yes, recreate it.
 # That's a basic check, I don't really check contents but that more when someone rm -rf /data/*
