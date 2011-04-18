@@ -126,28 +126,29 @@ on fs
     # mount yaffs2 mtd@system /system ro remount
     # mount yaffs2 mtd@userdata /data nosuid nodev
     # mount yaffs2 mtd@cache /cache nosuid nodev
-    mount rfs /dev/block/stl9 /system check=no
+#    mount rfs /dev/block/stl9 /system check=no
+fugu_mount_stl9
 
     # Temp add for FY -> GB update problem 
     # After update GB, need to remove
-    copy /tmp/linker /system/bin/linker
-    copy /tmp/libc.so /system/lib/libc.so
-    copy /tmp/libcutils.so /system/lib/libcutils.so
-    copy /tmp/liblog.so /system/lib/liblog.so
-    copy /tmp/libz.so /system/lib/libz.so
-    copy /tmp/libstdc++.so /system/lib/libstdc++.so
+#    copy /tmp/linker /system/bin/linker
+#    copy /tmp/libc.so /system/lib/libc.so
+#    copy /tmp/libcutils.so /system/lib/libcutils.so
+#    copy /tmp/liblog.so /system/lib/liblog.so
+#    copy /tmp/libz.so /system/lib/libz.so
+#    copy /tmp/libstdc++.so /system/lib/libstdc++.so
 		
-    exec umount
+#    exec umount
     
-    mount rfs /dev/block/stl9 /system check=no
-    mount rfs /dev/block/stl9 /system ro remount
+#    mount rfs /dev/block/stl9 /system check=no
+#    mount rfs /dev/block/stl9 /system ro remount
 
 # SEC_DMCRYPT for MC_CRYPT_ROOT before apply_disk_policy or apply_sec_devenc_init
     #chown system system /efs
     #chown radio radio /efs
     chown radio system /efs
     chmod 0771 /efs
-    mount rfs /dev/block/stl3 /efs nosuid nodev check=no
+#    mount rfs /dev/block/stl3 /efs nosuid nodev check=no
 
 # use movinand second partition as /data. d.moskvitin
     #temp
@@ -159,13 +160,15 @@ on fs
     mkdir /data
 # SEC_DMCRYPT crypt flag added data
     # mount rfs /dev/block/mmcblk0p2 /data nosuid nodev check=no
-    mount rfs /dev/block/mmcblk0p2 /data nosuid nodev crypt check=no
+#    mount rfs /dev/block/mmcblk0p2 /data nosuid nodev crypt check=no
+fugu_mount_mmcblk0p2
     chown system system /data
     chmod 0771 /data    
 
     mkdir /dbdata
   #SEC_DMCRYPT crypt flag added
-    mount rfs /dev/block/stl10 /dbdata nosuid nodev crypt check=no
+#    mount rfs /dev/block/stl10 /dbdata nosuid nodev crypt check=no
+fugu_mount_stl10
     #mount rfs /dev/block/stl10 /dbdata nosuid nodev check=no
     chown system system /dbdata
     chmod 0771 /dbdata
@@ -179,7 +182,8 @@ on fs
     mkdir /dbdata/db-journal
     chown system system /dbdata/db-journal
     chmod 0777 /dbdata/db-journal
-    mount rfs /dev/block/stl11 /cache nosuid nodev check=no
+#    mount rfs /dev/block/stl11 /cache nosuid nodev check=no
+fugu_mount_stl11
 
     mkdir /mnt/.lfs 0755 root root
     mount j4fs /dev/block/stl6 /mnt/.lfs
