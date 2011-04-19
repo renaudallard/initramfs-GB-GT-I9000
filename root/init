@@ -56,9 +56,6 @@ case $STL9_FS in
 	reiserfs)
 	STL9_MNT=',noatime,notail'
 	;;
-	nilfs2)
-	STL9_MNT=''
-	;;
 	rfs)
 	STL9_MNT=',noatime,check=no'
 	;;
@@ -72,9 +69,6 @@ case $STL10_FS in
 	;;
 	reiserfs)
 	STL10_MNT=',noatime,notail'
-	;;
-	nilfs2)
-	STL10_MNT=''
 	;;
 	tmpfs)
 	STL10_MNT=',size=32m'
@@ -92,9 +86,6 @@ case $STL11_FS in
 	;;
 	reiserfs)
 	STL11_MNT=',noatime,notail'
-	;;
-	nilfs2)
-	STL11_MNT=''
 	;;
 	tmpfs)
 	STL11_MNT=',size=32m'
