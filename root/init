@@ -114,10 +114,10 @@ esac
 }
 
 get_filesystems() {
-	STL9_FS=`grep stl9 /fugumod_sd/fugumod/fs.current | awk '{ print $2 }'` | sed 's/ext.*/ext4/g'
-	STL10_FS=`grep stl10 /fugumod_sd/fugumod/fs.current | awk '{ print $2 }'` | sed 's/ext.*/ext4/g'
-	STL11_FS=`grep stl11 /fugumod_sd/fugumod/fs.current | awk '{ print $2 }'` | sed 's/ext.*/ext4/g'
-	MMC_FS=`grep mmcblk0p2 /fugumod_sd/fugumod/fs.current | awk '{ print $2 }'` | sed 's/ext.*/ext4/g'
+	STL9_FS=`grep stl9 /fugumod_sd/fugumod/fs.current | awk '{ print $2 }' | sed 's/ext.*/ext4/g'`
+	STL10_FS=`grep stl10 /fugumod_sd/fugumod/fs.current | awk '{ print $2 }' | sed 's/ext.*/ext4/g'`
+	STL11_FS=`grep stl11 /fugumod_sd/fugumod/fs.current | awk '{ print $2 }' | sed 's/ext.*/ext4/g'`
+	MMC_FS=`grep mmcblk0p2 /fugumod_sd/fugumod/fs.current | awk '{ print $2 }' | sed 's/ext.*/ext4/g'`
 }
 
 date >/fugumod.log
