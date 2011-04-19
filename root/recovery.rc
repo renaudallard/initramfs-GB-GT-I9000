@@ -45,13 +45,16 @@ on fs
     mount tmpfs tmpfs /tmp
 #    mount rfs /dev/block/stl9 /system check=no
 fugu_mount_stl9
+fugu_mount_stl11
+
+    mkdir /cache/recovery
 
 # SEC_DMCRYPT for MC_CRYPT_ROOT before apply_disk_policy or apply_sec_devenc_init
     #chown system system /efs
     #chown radio radio /efs
     chown radio system /efs
     chmod 0771 /efs
-    mount rfs /dev/block/stl3 /efs nosuid nodev check=no
+#    mount rfs /dev/block/stl3 /efs nosuid nodev check=no
 
     exec apply_disk_policy
 
