@@ -341,6 +341,17 @@ mount -t ${STL9_FS} -o rw${STL9_MNT} /dev/block/stl9 /system
 rm /system/bin/fat.format
 ln -s /sbin/fat.format /system/bin/fat.format
 
+# generate recovery.fstab
+echo "[DEVICE]
+/efs	rfs	/dev/block/stl3	default	default
+/system	${STL9_FS}	/dev/block/stl9	default	rw${STL9_MNT}
+/dbdata	${STL10_FS}	/dev/block/stl10	default	rw${STL10_MNT}
+/cache	${STL11_FS}	/dev/block/stl11	default	rw${STL11_MNT}
+/sdcard	vfat	/dev/block/mmcblk0p1	default	default
+/data	${MMC_FS}	/dev/block/mmcblk0p2	default	rw${MMC_MNT}
+" > /system/etc/recovery.fstab
+cp /system/etc/recovery.fstab /etc/recovery.fstab
+
 # Mount data since it will be used for tests afterwards anyway
 mount -t ${MMC_FS} -o rw${MMC_MNT} /dev/block/mmcblk0p2 /data
 

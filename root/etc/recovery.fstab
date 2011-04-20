@@ -1,8 +1,0 @@
-[device]
-# mount point	fstype		device			format option	mount option
-/efs		rfs		/dev/block/stl3		default		default
-/system		rfs		/dev/block/stl9		default		default
-/dbdata		rfs		/dev/block/stl10	rfs16		default
-/cache		rfs		/dev/block/stl11	rfs16		default
-/sdcard		vfat		/dev/block/mmcblk0p1	default		default
-/data		rfs		/dev/block/mmcblk0p2	rfs32		default
