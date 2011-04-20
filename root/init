@@ -216,6 +216,7 @@ fi
 
 # Creates config
 build_fs_current
+set_mount_options
 
 #Insert RFS modules if any filesystem is rfs
 if grep rfs /fugumod_sd/fugumod/fs.current | grep -v reiser || grep rfs /fugumod_sd/fugumod/fs.convert 2>/dev/null | grep -v reiser
@@ -223,7 +224,17 @@ then
 	echo "RFS detected: inserting modules" >> /fugumod.log
 	insmod /rfs/rfs_glue.ko
 	insmod /rfs/rfs_fat.ko
-	chmod 755 /system/bin/linker
+	#get required files for fat.format
+	mount -t ${STL9_FS} -o ro${STL9_MNT} /dev/block/stl9 /system
+	cp /system/bin/linker /rfs/
+	for FILE in libc.so libcutils.so liblog.so libm.so libstdc++.so
+	do
+		cp /system/lib/$FILE /lib
+	done
+	umount /system
+	mkdir -p /system/bin
+	mv /rfs/linker /system/bin/
+	ln -s /sbin/fat.format.real /sbin/mkfs.rfs
 fi
 
 
@@ -342,7 +353,7 @@ rm /system/bin/fat.format
 ln -s /sbin/fat.format /system/bin/fat.format
 
 # generate recovery.fstab
-echo "[DEVICE]
+echo "
 /efs	rfs	/dev/block/stl3	default	default
 /system	${STL9_FS}	/dev/block/stl9	default	rw${STL9_MNT}
 /dbdata	${STL10_FS}	/dev/block/stl10	default	rw${STL10_MNT}
