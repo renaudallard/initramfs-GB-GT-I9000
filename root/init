@@ -26,7 +26,7 @@
 # authors and should not be interpreted as representing official policies, either expressed
 # or implied, of Renaud Allard.
 
-VERSION=2.1
+VERSION=2.3
 
 PATH=/bin:/sbin:/usr/bin/:/usr/sbin:/system/bin
 
@@ -37,7 +37,7 @@ build_fs_current()
 	for DEVICE in mmcblk0p2 stl10 stl11 stl9
 	do
 		mount -o ro /dev/block/${DEVICE} /fugu_mnt
-		mount | awk '/\/fugu_mnt/ { print $1 " " $5 }' | awk -F "/" '{ print $4 }' | sed 's/vfat/rfs/' >> /fugumod_sd/fugumod/fs.current
+		mount | awk '/\/fugu_mnt/ { print $1 " " $5 }' | awk -F "/" '{ print $4 }' | sed 's/vfat/rfs/' | sed 's/ext.*/ext4/' >> /fugumod_sd/fugumod/fs.current
 		umount /fugu_mnt
 	done
 	rmdir /fugu_mnt
@@ -217,24 +217,32 @@ fi
 # Creates config
 build_fs_current
 set_mount_options
+get_filesystems
 
 #Insert RFS modules if any filesystem is rfs
 if grep rfs /fugumod_sd/fugumod/fs.current | grep -v reiser || grep rfs /fugumod_sd/fugumod/fs.convert 2>/dev/null | grep -v reiser
 then
 	echo "RFS detected: inserting modules" >> /fugumod.log
-	insmod /rfs/rfs_glue.ko
-	insmod /rfs/rfs_fat.ko
-	#get required files for fat.format
-	mount -t ${STL9_FS} -o ro${STL9_MNT} /dev/block/stl9 /system
-	cp /system/bin/linker /rfs/
-	for FILE in libc.so libcutils.so liblog.so libm.so libstdc++.so
-	do
-		cp /system/lib/$FILE /lib
-	done
-	umount /system
-	mkdir -p /system/bin
-	mv /rfs/linker /system/bin/
-	ln -s /sbin/fat.format.real /sbin/mkfs.rfs
+	insmod /rfs/rfs_glue.ko 2>>/fugumod.log
+	insmod /rfs/rfs_fat.ko 2>>/fugumod.log
+
+	if grep rfs /fugumod_sd/fugumod/fs.convert 2>/dev/null | grep -v reiser
+	then
+		#get required files for fat.format
+		mount -t ${STL9_FS} -o ro${STL9_MNT} /dev/block/stl9 /system 2>>/fugumod.log
+		mount >>/fugumod.log
+		cp /system/bin/linker /rfs/ 2>>/fugumod.log
+		for FILE in libc.so libcutils.so liblog.so libm.so libstdc++.so
+		do
+			cp /system/lib/$FILE /rfs/ 2>>/fugumod.log
+		done
+		umount /system 2>>/fugumod.log
+		mkdir -p /system/bin 2>>/fugumod.log
+		mkdir -p /system/lib 2>>/fugumod.log
+		mv /rfs/linker /system/bin/ 2>>/fugumod.log
+		mv /rfs/lib* /system/lib/ 2>>/fugumod.log
+		ln -s /sbin/fat.format.real /sbin/mkfs.rfs 2>>/fugumod.log
+	fi
 fi
 
 
@@ -285,7 +293,7 @@ then
 			MKFS='/sbin/mkreiserfs -q -b 4096 -s 1000 '
 			;;
 			rfs)
-			MKFS='/sbin/mkfs.rfs -F 16 -S 4096 -s 8 '
+			MKFS='/sbin/mkfs.rfs -F 16 -S 4096 '
 			;;
 			esac
 			if [ "${CUR_FS}" == "rfs" ]
@@ -381,6 +389,7 @@ then
 # Superuser
     rm /system/app/Superuser.apk
     rm /data/app/Superuser.apk
+    rm /data/dalvik-cache/*uperuser.apk*
     cp /res/misc/Superuser.apk /system/app/
     chown 0.0 /system/app/Superuser.apk
     chmod 644 /system/app/Superuser.apk
@@ -445,11 +454,15 @@ if ( test -f /data/local/bootanimation.zip || test -f /system/media/bootanimatio
 		user graphics
 		group graphics
 		disabled
-		oneshot' >> init.rc
+		oneshot
+		' >> init.rc
 	else
-	echo 'service playlogos1 /system/bin/playlogos1
-		user root
-		oneshot' >> init.rc
+	echo 'service samsungani /system/bin/samsungani
+		    user graphics
+		    group graphics
+		    disabled
+		    oneshot
+		' >> init.rc
 fi
 
 # remove temporary stuff to free memory
