@@ -448,23 +448,6 @@ then
     rmdir /fugumod_efs
 fi
 
-# Test if bootanimation is present and playable and if it is make the service
-if ( test -f /data/local/bootanimation.zip || test -f /system/media/bootanimation.zip ) && test -f /system/bin/bootanimation; then
-	echo 'service bootanim /system/bin/bootanimation
-		user graphics
-		group graphics
-		disabled
-		oneshot
-		' >> init.rc
-	else
-	echo 'service samsungani /system/bin/samsungani
-		    user graphics
-		    group graphics
-		    disabled
-		    oneshot
-		' >> init.rc
-fi
-
 # remove temporary stuff to free memory
 rm /res/misc/Superuser.apk
 
