@@ -171,9 +171,12 @@ mknod /dev/ramzswap0 b 253 0
 mount -t proc proc /proc
 mount -t sysfs sys /sys
 
+ULTRA=0
+
 if grep rcu_preempt /proc/kallsyms >/dev/null
 then
 	echo 'Ultra Version Detected' >> /fugumod.log
+	ULTRA=1
 fi
 
 insmod /lib/modules/fsr.ko
@@ -432,22 +435,28 @@ then
 	/sbin/fix_permissions >>/fugumod.log
 fi
 
-# Has EFS been erased? If yes, recreate it.
-# That's a basic check, I don't really check contents but that more when someone rm -rf /data/*
-if [ ! -d /dbdata/efs ]
+# Try to see if we have an EFS backup, if not create it but not if running Ultra
+if test ! -f /fugumod_sd/fugumod/EFS_backup.tar.gz && [ $ULTRA == 0 ]
 then
-# Copy /efs
     insmod /rfs/rfs_glue.ko
     insmod /rfs/rfs_fat.ko
-    mkdir /fugumod_efs
-    mount -t rfs -o ro,nosuid,nodev,check=no /dev/block/stl3 /fugumod_efs
-    mkdir /dbdata/efs
-    cp -rp /fugumod_efs/* /dbdata/efs/
-    cp -rp /fugumod_efs/.* /dbdata/efs/
+    mkdir -p /efs
+    mount -t rfs -o ro,nosuid,nodev,check=no /dev/block/stl3 /efs
+    cd /
+    tar cvzf /fugumod_sd/fugumod/EFS_backup.tar.gz efs >>/fugumod.log
+    umount /efs
+    rmdir /efs
+fi
+
+# Has EFS been erased? If yes, recreate it from backup
+# That's a basic check, I don't really check contents but that more when someone rm -rf /data/*
+if test ! -d /dbdata/efs 
+then
+# Copy /efs
+    cd /dbdata
+    tar xvzf /fugumod_sd/fugumod/EFS_backup.tar.gz >>/fugumod.log
     chown -R 1001:1001 /dbdata/efs
     chmod 0771 /dbdata/efs
-    umount /fugumod_efs
-    rmdir /fugumod_efs
 fi
 
 # remove temporary stuff to free memory
