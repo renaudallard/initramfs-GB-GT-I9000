@@ -436,14 +436,14 @@ then
 fi
 
 # Try to see if we have an EFS backup, if not create it but not if running Ultra
-if test ! -f /fugumod_sd/fugumod/EFS_backup.tar.gz && [ $ULTRA == 0 ]
+if test ! -f /fugumod_sd/fugumod/EFS_backup.tar && [ $ULTRA == 0 ]
 then
     insmod /rfs/rfs_glue.ko
     insmod /rfs/rfs_fat.ko
     mkdir -p /efs
     mount -t rfs -o ro,nosuid,nodev,check=no /dev/block/stl3 /efs
     cd /
-    tar cvzf /fugumod_sd/fugumod/EFS_backup.tar.gz efs >>/fugumod.log
+    tar cvf /fugumod_sd/fugumod/EFS_backup.tar efs >>/fugumod.log
     umount /efs
     rmdir /efs
 fi
@@ -454,7 +454,7 @@ if test ! -d /dbdata/efs
 then
 # Copy /efs
     cd /dbdata
-    tar xvzf /fugumod_sd/fugumod/EFS_backup.tar.gz >>/fugumod.log
+    tar xvf /fugumod_sd/fugumod/EFS_backup.tar >>/fugumod.log
     chown -R 1001:1001 /dbdata/efs
     chmod 0771 /dbdata/efs
 fi
