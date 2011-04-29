@@ -45,9 +45,9 @@ on fs
     mount tmpfs tmpfs /tmp
 #    mount rfs /dev/block/stl9 /system check=no
 fugu_mount_stl9
-fugu_mount_stl11
+#fugu_mount_stl11
 
-    mkdir /cache/recovery
+#    mkdir /cache/recovery
 
 # SEC_DMCRYPT for MC_CRYPT_ROOT before apply_disk_policy or apply_sec_devenc_init
     #chown system system /efs
@@ -80,8 +80,8 @@ on boot
 service ueventd /sbin/ueventd
     critical
 
-#service console /system/bin/sh
-#    console
+service console /sbin/busybox sh
+    console
 
 service recovery /sbin/recovery
 

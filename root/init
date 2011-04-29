@@ -171,11 +171,13 @@ mknod /dev/ramzswap0 b 253 0
 mount -t proc proc /proc
 mount -t sysfs sys /sys
 
+if grep rcu_preempt /proc/kallsyms >/dev/null
+then
+	echo 'Ultra Version Detected' >> /fugumod.log
+fi
+
 insmod /lib/modules/fsr.ko
 insmod /lib/modules/fsr_stl.ko
-#needs parameters
-#insmod /lib/modules/onedram.ko
-#insmod /lib/modules/storage.ko
 
 mkdir -p /fugumod_sd
 mount -t vfat -o utf8 /dev/block/mmcblk0p1 /fugumod_sd
