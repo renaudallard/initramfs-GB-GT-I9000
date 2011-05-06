@@ -379,6 +379,19 @@ cp /system/etc/recovery.fstab /etc/recovery.fstab
 # Mount data since it will be used for tests afterwards anyway
 mount -t ${MMC_FS} -o rw${MMC_MNT} /dev/block/mmcblk0p2 /data
 
+#JVH wifi
+if test -d /data/wifi
+then
+	cd /data
+	mkdir -p misc/wifi
+	cp -rp wifi/* misc/wifi/
+	rm -rf wifi
+	ln -s misc/wifi .
+	cd wifi
+	ln -s bcm_supp.conf wpa_supplicant.conf
+	cd /
+fi
+
 #install various things
 if [ ! -f /system/Renaud_Allard.$VERSION ]
 then
