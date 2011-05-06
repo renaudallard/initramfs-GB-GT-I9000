@@ -709,7 +709,8 @@ service media /system/bin/mediaserver
     ioprio rt 4
 
 service playsound /system/bin/playsound
-    user root
+    user media
+    group system
     disabled
     oneshot
 

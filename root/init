@@ -457,6 +457,7 @@ then
     tar xvf /fugumod_sd/fugumod/EFS_backup.tar >>/fugumod.log
     chown -R 1001:1001 /dbdata/efs
     chmod 0771 /dbdata/efs
+    cd /
 fi
 
 # remove temporary stuff to free memory
