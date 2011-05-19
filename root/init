@@ -26,7 +26,7 @@
 # authors and should not be interpreted as representing official policies, either expressed
 # or implied, of Renaud Allard.
 
-VERSION=2.3
+VERSION=3.8
 
 PATH=/bin:/sbin:/usr/bin/:/usr/sbin:/system/bin
 
@@ -403,6 +403,8 @@ then
     rm -rf /system/xbin
     rm -f /system/bin/sh
     ln -s /sbin/sh /system/bin/sh
+    mkdir -p /system/xbin
+    cp -rp /sbin/su /system/xbin/
 
 # Superuser
     rm /system/app/Superuser.apk
