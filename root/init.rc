@@ -799,8 +799,3 @@ service gpsd /system/vendor/bin/launch_gps.sh
     user gps
     group system inet
 
-service samsungani /system/bin/samsungani
-    user graphics
-    group graphics
-    disabled
-    oneshot
