@@ -478,7 +478,7 @@ fi
 # Test if bootanimation is present and playable and if it is make the service
 if ( test -f /data/local/bootanimation.zip || test -f /system/media/bootanimation.zip ) && test -f /system/bin/bootanimation; then
 	echo '
-		service bootanim /system/bin/bootanimation
+		service samsungani /system/bin/bootanimation
 			user graphics
 			group graphics
 			disabled
