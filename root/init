@@ -414,9 +414,6 @@ then
     chown 0.0 /system/app/Superuser.apk
     chmod 644 /system/app/Superuser.apk
 
-# FuguApp
-    rm /system/app/fuguapp.apk
-
 # Change GPS settings
     sed -i 's/north-america/europe/' /system/etc/gps.conf
 
