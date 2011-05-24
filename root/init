@@ -26,7 +26,7 @@
 # authors and should not be interpreted as representing official policies, either expressed
 # or implied, of Renaud Allard.
 
-VERSION=3.8
+VERSION=3.9
 
 PATH=/bin:/sbin:/usr/bin/:/usr/sbin:/system/bin
 
@@ -419,7 +419,7 @@ then
     rm /system/etc/PowerOn.wav /system/media/audio/ui/shutdown.ogg /system/media/audio/ui/TW_Battery_caution.ogg 
 
 # install backlight lib
-    cp /res/misc/liblight_binary/lights.s5pc110.so /system/lib/hw/
+    cp /res/misc/lights.s5pc110.so /system/lib/hw/
 
 # Dirty hack to get back notification sounds
     cp -r /system/media/audio/notifications /fugumod_sd/
