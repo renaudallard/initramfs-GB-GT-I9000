@@ -380,7 +380,7 @@ cp /system/etc/recovery.fstab /etc/recovery.fstab
 mount -t ${MMC_FS} -o rw${MMC_MNT} /dev/block/mmcblk0p2 /data
 
 #>JVH wifi
-if test -d /data/wifi/bcm_supp.conf
+if test -f /data/wifi/bcm_supp.conf
 then
 	sed -i 's|WPA_SUPPLICANT_SERVICE|service wpa_supplicant /system/bin/wpa_supplicant -Dwext -ieth0 -c/data/wifi/bcm_supp.conf|' /init.rc
 else
